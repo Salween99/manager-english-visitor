@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>经理英语 · 听力体验</title>
+  <style>
+    :root {
+      font: 16px/1.6 "Inter", system-ui, sans-serif;
+      color: #203a31;
+      background: #f3f7f2;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+    header { padding: 14px 20px; background: #fff; border-bottom: 1px solid #d2e0d8; font-weight: 700; }
+    main { width: min(100% - 32px, 660px); margin: 32px auto; }
+    h1 { margin: 0 0 6px; font-size: clamp(30px, 6vw, 43px); letter-spacing: -.04em; }
+    h2 { margin: 0 0 6px; font-size: 1.25rem; }
+    p { margin: 0 0 14px; }
+    .panel { margin-block: 18px; padding: clamp(16px, 5vw, 28px); background: #fff; border: 1px solid #d2e0d8; border-radius: 18px; }
+    audio { display: block; width: 100%; margin: 14px 0; }
+    label { display: block; margin: 14px 0 4px; }
+    input, button { font: inherit; border-radius: 8px; min-height: 44px; }
+    input { display: block; width: 100%; padding: 8px 12px; border: 1px solid #91ab9e; }
+    button { margin-top: 20px; border: 0; padding: 8px 18px; background: #275e4c; color: white; font-weight: 650; cursor: pointer; }
+    :focus-visible { outline: 3px solid #397c65; outline-offset: 3px; }
+    a { color: #245847; }
+    #result { margin: 14px 0 0; }
+    #result:empty { display: none; }
+  </style>
+</head>
+<body>
+  <header>经理英语</header>
+  <main>
+    <h1>听力体验</h1>
+    <p>播放一段英语对话，填写听到的信息，再核对答案。</p>
+    <section class="panel" aria-labelledby="audio-title">
+      <h2 id="audio-title" lang="en">Welcome!</h2>
+      <audio controls preload="metadata" src="./welcome.mp3" aria-label="VOA 原版对话录音"></audio>
+      <p><small>录音来源 <a href="https://learningenglish.voanews.com/a/lets-learn-english-lesson-one/3111026.html">VOA Learning English</a></small></p>
+    </section>
+    <form class="panel" id="exercise">
+      <h2>听音填空</h2>
+      <label for="name" lang="en">1. How does the woman spell her first name?</label>
+      <input id="name" name="name" lang="en" required spellcheck="false" autocomplete="off">
+      <label for="street" lang="en">2. What street number does the man say?</label>
+      <input id="street" name="street" inputmode="numeric" required autocomplete="off">
+      <button type="submit">核对答案</button>
+      <p id="result" role="status" aria-live="polite"></p>
+    </form>
+  </main>
+  <script>
+    const exercise = document.querySelector("#exercise");
+    const result = document.querySelector("#result");
+    exercise.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const values = new FormData(exercise);
+      const name = values.get("name").trim().toLowerCase().replace(/[\s-]/g, "");
+      const street = values.get("street").trim().replace(/[,\s]/g, "");
+      const correct = Number(name === "anna") + Number(street === "1400");
+      result.textContent = "答对 " + correct + " / 2 题。参考答案为 Anna 和 1400。";
+    });
+  </script>
+</body>
+</html>
